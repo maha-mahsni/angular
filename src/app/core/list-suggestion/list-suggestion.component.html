@@ -1,0 +1,108 @@
+<div class="page">
+  <header class="page__header">
+    <div>
+      <p class="eyebrow">Tableau des suggestions</p>
+      <h1>Suivre et prioriser les idées</h1>
+      <p class="subtitle">
+        Recherchez, filtrez, mettez en favoris et likez les propositions de votre équipe.
+      </p>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <span class="metric__label">Total</span>
+        <span class="metric__value">{{ suggestions.length }}</span>
+      </div>
+      <div class="metric">
+        <span class="metric__label">Favoris</span>
+        <span class="metric__value">{{ favorites.length }}</span>
+      </div>
+      <div class="metric">
+        <span class="metric__label">Likes</span>
+        <span class="metric__value">{{ totalLikes }}</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="filters">
+    <label class="input">
+      <span>Recherche</span>
+      <input
+        type="search"
+        placeholder="Titre, description, catégorie..."
+        [(ngModel)]="searchText"
+      />
+    </label>
+
+    <label class="input">
+      <span>Statut</span>
+      <select [(ngModel)]="statusFilter">
+        <option value="toutes">Toutes</option>
+        <option value="acceptee">Acceptée</option>
+        <option value="refusee">Refusée</option>
+        <option value="en_attente">En attente</option>
+      </select>
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" [(ngModel)]="onlyFavorites" />
+      <span>Afficher uniquement les favoris</span>
+    </label>
+  </section>
+
+  <section *ngIf="favorites.length" class="favorites">
+    <p class="eyebrow">Favoris ({{ favorites.length }})</p>
+    <div class="chips">
+      <button
+        class="chip is-favorite"
+        *ngFor="let fav of favorites; trackBy: trackById"
+        (click)="toggleFavorite(fav)"
+      >
+        {{ fav.title }}
+        <span class="chip__remove">×</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="cards">
+    <article
+      class="card"
+      *ngFor="let s of filteredSuggestions(); trackBy: trackById"
+    >
+      <header class="card__header">
+        <div>
+          <p class="category">{{ s.category }}</p>
+          <h2>{{ s.title }}</h2>
+          <p class="description">{{ s.description }}</p>
+        </div>
+        <span class="status" [ngClass]="s.status">
+          {{ s.status | uppercase }}
+        </span>
+      </header>
+
+      <footer class="card__footer">
+        <div class="meta">
+          <span class="date">Créée le {{ s.date | date: 'dd MMMM yyyy' }}</span>
+          <span class="likes-pill">
+            <span class="likes-pill__icon">❤</span>
+            <span class="likes-pill__count">{{ s.nbLikes }}</span>
+            <span class="likes-pill__label">like{{ s.nbLikes > 1 ? 's' : '' }}</span>
+          </span>
+        </div>
+        <div class="actions">
+          <button class="btn ghost" (click)="likeSuggestion(s)">👍 J'aime</button>
+          <button
+            class="btn"
+            [ngClass]="{ secondary: isFavorite(s) }"
+            (click)="toggleFavorite(s)"
+          >
+            {{ isFavorite(s) ? 'Retirer des favoris' : 'Ajouter aux favoris' }}
+          </button>
+        </div>
+      </footer>
+    </article>
+
+    <p *ngIf="!filteredSuggestions().length" class="empty">
+      Aucune suggestion ne correspond aux filtres.
+    </p>
+  </section>
+</div>
