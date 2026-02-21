@@ -62,6 +62,15 @@ h1 {
   font-weight: 700;
 }
 
+.toolbar {
+  margin-bottom: 16px;
+}
+
+.toolbar .btn {
+  display: inline-block;
+  text-decoration: none;
+}
+
 .filters {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

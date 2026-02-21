@@ -1,0 +1,97 @@
+.form-page {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: #0f172a;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.form-title {
+  margin: 0 0 24px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.suggestion-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.input {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.input.readonly {
+  background: #f1f5f9;
+  color: #64748b;
+  cursor: default;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.select {
+  cursor: pointer;
+}
+
+.error {
+  font-size: 12px;
+  color: #dc2626;
+  margin-top: 2px;
+}
+
+.actions {
+  margin-top: 8px;
+}
+
+.btn.submit {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn.submit:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.btn.submit:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}

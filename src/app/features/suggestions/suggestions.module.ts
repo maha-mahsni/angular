@@ -1,20 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuggestionsRoutingRoutingModule } from './suggestions-routing.module';
 import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SuggestionsListComponent } from './suggestions-list/suggestions-list.component';
 import { SuggestionDetailsComponent } from './suggestion-details/suggestion-details.component';
+import { SuggestionFormComponent } from './suggestion-form/suggestion-form.component';
 
 @NgModule({
   declarations: [
     SuggestionsComponent,
     SuggestionsListComponent,
-    SuggestionDetailsComponent
+    SuggestionDetailsComponent,
+    SuggestionFormComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     SuggestionsRoutingRoutingModule
   ]
 })

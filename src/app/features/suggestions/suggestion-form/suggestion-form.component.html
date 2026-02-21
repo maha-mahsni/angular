@@ -1,0 +1,78 @@
+<div class="form-page">
+  <h2 class="form-title">Suggestion FormComponent</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="suggestion-form">
+    <div class="field">
+      <label for="titre">Titre :</label>
+      <input
+        id="titre"
+        type="text"
+        formControlName="titre"
+        placeholder="Titre"
+        class="input"
+      />
+      <div class="error" *ngIf="form.get('titre')?.invalid && form.get('titre')?.touched">
+        <span *ngIf="form.get('titre')?.errors?.['required']">Le titre est obligatoire.</span>
+        <span *ngIf="form.get('titre')?.errors?.['minlength']">Le titre doit contenir au minimum 5 caractères.</span>
+        <span *ngIf="form.get('titre')?.errors?.['pattern']">Le titre ne doit contenir que des lettres et commencer par une majuscule.</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="description">Description :</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        placeholder="Description"
+        class="input textarea"
+        rows="4"
+      ></textarea>
+      <div class="error" *ngIf="form.get('description')?.invalid && form.get('description')?.touched">
+        <span *ngIf="form.get('description')?.errors?.['required']">La description est obligatoire.</span>
+        <span *ngIf="form.get('description')?.errors?.['minlength']">La description doit contenir au minimum 30 caractères.</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="categorie">Catégorie :</label>
+      <select
+        id="categorie"
+        formControlName="categorie"
+        class="input select"
+      >
+        <option value="">-- Sélectionnez une catégorie --</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
+      <div class="error" *ngIf="form.get('categorie')?.invalid && form.get('categorie')?.touched">
+        <span *ngIf="form.get('categorie')?.errors?.['required']">La catégorie est obligatoire.</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="date">Date :</label>
+      <input
+        id="date"
+        type="text"
+        formControlName="date"
+        readonly
+        class="input readonly"
+      />
+    </div>
+
+    <div class="field">
+      <label for="status">Status :</label>
+      <input
+        id="status"
+        type="text"
+        formControlName="status"
+        readonly
+        class="input readonly"
+      />
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn submit" [disabled]="form.invalid">
+        Soumettre
+      </button>
+    </div>
+  </form>
+</div>
