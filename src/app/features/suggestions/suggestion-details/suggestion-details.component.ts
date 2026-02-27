@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Suggestion } from '../../../models/suggestion';
-import { SuggestionService } from '../suggestion.service';
+import { SuggestionService } from '../../../core/services/suggestion.service';
 
 @Component({
   selector: 'app-suggestion-details',
@@ -19,18 +19,29 @@ export class SuggestionDetailsComponent implements OnInit {
     private suggestionService: SuggestionService
   ) {}
 
-  ngOnInit() {
-    this.route.paramMap.subscribe(params => {
+  ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
         this.suggestionId = +id;
-        const suggestions = this.suggestionService.getSuggestions();
-        this.suggestion = suggestions.find(s => s.id === this.suggestionId) || null;
+        this.suggestionService.getSuggestionById(this.suggestionId).subscribe({
+          next: (data) => (this.suggestion = data),
+          error: () => {
+            const list = this.suggestionService.getSuggestionList();
+            this.suggestion = list.find((s) => s.id === this.suggestionId) || null;
+          }
+        });
       }
     });
   }
 
-  goBackToList() {
+  goBackToList(): void {
     this.router.navigate(['/suggestions']);
+  }
+
+  goToEdit(): void {
+    if (this.suggestion) {
+      this.router.navigate(['/suggestions', 'edit', this.suggestion.id]);
+    }
   }
 }

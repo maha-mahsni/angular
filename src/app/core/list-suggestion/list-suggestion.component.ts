@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Suggestion } from '../../models/suggestion';
+import { SuggestionService } from '../services/suggestion.service';
 
 @Component({
   selector: 'app-list-suggestion',
@@ -10,44 +11,26 @@ import { Suggestion } from '../../models/suggestion';
   templateUrl: './list-suggestion.component.html',
   styleUrls: ['./list-suggestion.component.css']
 })
-export class ListSuggestionComponent {
+export class ListSuggestionComponent implements OnInit {
   searchText = '';
   statusFilter: 'toutes' | 'acceptee' | 'refusee' | 'en_attente' = 'toutes';
   onlyFavorites = false;
   favorites: Suggestion[] = [];
+  suggestions: Suggestion[] = [];
 
-  suggestions: Suggestion[] = [
-    {
-      id: 1,
-      title: 'Organiser une journée team building',
-      description: 'Suggestion pour organiser une journée de team building.',
-      category: 'Événements',
-      date: new Date('2025-01-20'),
-      status: 'acceptee',
-      nbLikes: 10
-    },
-    {
-      id: 2,
-      title: 'Améliorer le système de réservation',
-      description: 'Amélioration de la gestion des réservations.',
-      category: 'Technologie',
-      date: new Date('2025-01-15'),
-      status: 'refusee',
-      nbLikes: 0
-    },
-    {
-      id: 3,
-      title: 'Mettre en place une boîte à idées',
-      description: 'Créer un canal interne où chaque employé peut poster ses idées.',
-      category: 'Organisation',
-      date: new Date('2025-02-01'),
-      status: 'en_attente',
-      nbLikes: 3
-    }
-  ];
+  constructor(private suggestionService: SuggestionService) {}
 
-  likeSuggestion(s: Suggestion) {
-    s.nbLikes++;
+  ngOnInit(): void {
+    this.suggestionService.getSuggestionsFromApi().subscribe((data) => {
+      this.suggestions = Array.isArray(data) ? data : [];
+    });
+  }
+
+  likeSuggestion(s: Suggestion): void {
+    this.suggestionService.updateNbLikes(s.id, s.nbLikes + 1).subscribe({
+      next: (updated) => (s.nbLikes = updated.nbLikes),
+      error: () => (s.nbLikes++)
+    });
   }
 
   toggleFavorite(s: Suggestion) {

@@ -287,6 +287,16 @@ h1 {
   color: #e2e8f0;
 }
 
+.btn.danger {
+  background: linear-gradient(120deg, #dc2626, #b91c1c);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(220, 38, 38, 0.35);
+}
+
+.btn.danger:hover {
+  background: linear-gradient(120deg, #b91c1c, #991b1b);
+}
+
 .btn:hover {
   transform: translateY(-1px);
 }

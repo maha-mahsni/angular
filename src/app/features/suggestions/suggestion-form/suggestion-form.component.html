@@ -71,7 +71,7 @@
 
     <div class="actions">
       <button type="submit" class="btn submit" [disabled]="form.invalid">
-        Soumettre
+        {{ isEditMode ? 'Enregistrer' : 'Soumettre' }}
       </button>
     </div>
   </form>

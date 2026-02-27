@@ -19,6 +19,10 @@ const routes: Routes = [
         component: SuggestionFormComponent
       },
       {
+        path: 'edit/:id',
+        component: SuggestionFormComponent
+      },
+      {
         path: ':id',
         component: SuggestionDetailsComponent
       }

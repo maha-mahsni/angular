@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Suggestion } from '../../../models/suggestion';
-import { SuggestionService } from '../suggestion.service';
+import { SuggestionService } from '../../../core/services/suggestion.service';
 
 @Component({
   selector: 'app-suggestions-list',
@@ -8,20 +9,45 @@ import { SuggestionService } from '../suggestion.service';
   templateUrl: './suggestions-list.component.html',
   styleUrls: ['./suggestions-list.component.css']
 })
-export class SuggestionsListComponent {
+export class SuggestionsListComponent implements OnInit {
   searchText = '';
   statusFilter: 'toutes' | 'acceptee' | 'refusee' | 'en_attente' = 'toutes';
   onlyFavorites = false;
   favorites: Suggestion[] = [];
+  suggestions: Suggestion[] = [];
 
-  get suggestions(): Suggestion[] {
-    return this.suggestionService.getSuggestions();
+  constructor(
+    private suggestionService: SuggestionService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.loadSuggestions();
   }
 
-  constructor(private suggestionService: SuggestionService) {}
+  loadSuggestions(): void {
+    this.suggestionService.getSuggestionsFromApi().subscribe((data) => {
+      this.suggestions = Array.isArray(data) ? data : [];
+    });
+  }
 
-  likeSuggestion(s: Suggestion) {
-    s.nbLikes++;
+  likeSuggestion(s: Suggestion): void {
+    this.suggestionService.updateNbLikes(s.id, s.nbLikes + 1).subscribe({
+      next: (updated) => {
+        s.nbLikes = updated.nbLikes;
+      },
+      error: () => {
+        s.nbLikes++;
+      }
+    });
+  }
+
+  deleteSuggestion(s: Suggestion): void {
+    if (!confirm(`Supprimer la suggestion « ${s.title } » ?`)) return;
+    this.suggestionService.deleteSuggestion(s.id).subscribe({
+      next: () => this.loadSuggestions(),
+      error: () => this.loadSuggestions()
+    });
   }
 
   toggleFavorite(s: Suggestion) {
